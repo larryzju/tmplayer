@@ -1,0 +1,3 @@
+* Using object methods as callbacks/event handlers
+
+See answer in Stackoverflow https://stackoverflow.com/questions/20279484/how-to-access-the-correct-this-inside-a-callback

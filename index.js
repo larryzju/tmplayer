@@ -1,6 +1,13 @@
 class MyAudio {
     constructor(src) {
         this.audio = new Audio(src);
+        this.keymap = {
+            " ": this.pauseOrPlay,
+            "ArrowLeft": this.backward,
+            "ArrowRight": this.forward,
+            "ArrowUp": this.increaseVolume,
+            "ArrowDown": this.decreaseVolume
+        };
     }
 
     updateStatus() {
@@ -52,19 +59,8 @@ class MyAudio {
     }
 
     handlerKeyPress(evt) {
-        if(evt.key === " ") {
-            this.pauseOrPlay();
-        } else if(evt.key === "ArrowLeft") {
-            this.backward();
-        } else if(evt.key === "ArrowRight") {
-            this.forward();
-        } else if(evt.key === "ArrowUp") {
-            this.increaseVolume();
-        } else if(evt.key === "ArrowDown") {
-            this.decreaseVolume();
-        } else {
-            console.log(evt);
-        }
+        var handle = this.keymap[evt.key] || (() => console.log(evt));
+        handle.bind(this)();
     }
 }
 
@@ -72,7 +68,6 @@ window.onload = function() {
     var audio = new MyAudio("sample.mp3");
     var main = document.getElementById('main');
     main.focus();
-    main.onkeydown = function(evt){audio.handlerKeyPress(evt)};
-    window.setInterval(function(){audio.updateStatus()}, 200);
+    main.onkeydown = audio.handlerKeyPress.bind(audio);
+    window.setInterval(audio.updateStatus.bind(audio), 200);
 }
-
