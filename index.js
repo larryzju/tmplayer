@@ -1,6 +1,6 @@
 class MyAudio {
-    constructor(src) {
-        this.audio = new Audio(src);
+    constructor() {
+        this.audio = new Audio();
         this.keymap = {
             " ": this.pauseOrPlay,
             "ArrowLeft": this.backward,
@@ -10,6 +10,16 @@ class MyAudio {
         };
     }
 
+    changeFile(evt) {
+        var audio = this.audio;
+        var file = evt.target.files[0];
+        var reader = new FileReader();
+        reader.onload = (evt) => {
+            this.audio.src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
     updateStatus() {
         var status = document.getElementById('status');
         var currentTime = document.getElementById('currentTime');
@@ -17,7 +27,7 @@ class MyAudio {
         var volume = document.getElementById('volume');
         var progress = document.getElementById('progress');
 
-        status.innerHTML = this.audio.src;
+        status.innerText = this.audio.paused ? "not playing" : "playing";
         currentTime.innerHTML = this.audio.currentTime;
         endTime.innerHTML = this.audio.duration;
         volume.innerHTML = Math.round(this.audio.volume*100);
@@ -62,4 +72,5 @@ window.onload = function() {
     main.focus();
     main.onkeydown = audio.handlerKeyPress.bind(audio);
     window.setInterval(audio.updateStatus.bind(audio), 200);
+    document.getElementById('file').addEventListener('change', audio.changeFile.bind(audio));
 }
