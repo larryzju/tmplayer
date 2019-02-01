@@ -15,21 +15,13 @@ class MyAudio {
         var currentTime = document.getElementById('currentTime');
         var endTime = document.getElementById('endTime');
         var volume = document.getElementById('volume');
+        var progress = document.getElementById('progress');
 
-        var s = this.getStatus();
-        status.innerHTML = s.status;
-        currentTime.innerHTML = s.currentTime;
-        endTime.innerHTML = s.endTime;
-        volume.innerHTML = s.volume;
-    }
-
-    getStatus() {
-        var s = {};
-        s.status = this.audio.src;
-        s.currentTime = this.audio.currentTime;
-        s.endTime = this.audio.duration;
-        s.volume = this.audio.volume;
-        return s;
+        status.innerHTML = this.audio.src;
+        currentTime.innerHTML = this.audio.currentTime;
+        endTime.innerHTML = this.audio.duration;
+        volume.innerHTML = Math.round(this.audio.volume*100);
+        progress.value = isNaN(this.audio.duration) ? 0: this.audio.currentTime / this.audio.duration;
     }
 
     pauseOrPlay() {
